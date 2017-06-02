@@ -1,0 +1,25 @@
+CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
+
+#IF(COMMAND cmake_policy)
+#  cmake_policy(SET CMP0003 NEW)
+#ENDIF(COMMAND cmake_policy)  
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
+
+FIND_PACKAGE(SoapySDR REQUIRED)
+FIND_PACKAGE(Boost 
+  COMPONENTS program_options thread date_time 
+             system filesystem serialization regex)
+FIND_PACKAGE(FFTW3f REQUIRED QUIET)
+
+set(CMAKE_BUILD_TYPE "Debug")
+
+
+INCLUDE_DIRECTORIES(${SoapySDR_INCLUDE_DIRS}  ${FFTW3F_INCLUDE_DIRS} ${Boost_INCLUDE_DIRS})
+SET(SRXT_SRCS
+  SimpleRXTest.cxx
+  OSFilter.cxx
+)  
+
+ADD_EXECUTABLE(SimpleRXTest ${SRXT_SRCS})
+
+TARGET_LINK_LIBRARIES(SimpleRXTest rt ${SoapySDR_LIBRARIES} ${Boost_LIBRARIES} ${FFTW3F_LIBRARIES})
